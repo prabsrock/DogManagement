@@ -15,18 +15,21 @@ public class DogData {
     private Integer id;
     private String dogBreed;
     private String dogType;
+
     public Integer getId() {
         return id;
     }
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getDogBreed() {
         return dogBreed;
     }
     public void setDogBreed(String dogBreed) {
         this.dogBreed = dogBreed;
     }
+    
     public String getDogType() {
         return dogType;
     }

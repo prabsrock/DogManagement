@@ -8,19 +8,15 @@ import com.example.dog.model.DogData;
 import com.example.dog.repository.DogDataRepository;
 
 @RestController
-@RequestMapping(path = "/demo")
+@RequestMapping(path = "/api")
 public class DogDataController {
 
     @Autowired
     private DogDataRepository dogDataRepository;
 
-    @PostMapping(path = "/dogs") // Map ONLY POST Requests
-    public @ResponseBody DogData addDogData(@RequestBody DogData newDogData) {
-        DogData dogData = new DogData();
-        dogData.setDogBreed(newDogData.getDogBreed());
-        dogData.setDogType(newDogData.getDogType());
-        dogDataRepository.save(dogData);
-        return dogData;
+    @PostMapping(path = "/dogs")
+    public DogData addDogData(@RequestBody DogData dogData) {
+        return dogDataRepository.save(dogData);
     }
 
     @GetMapping(path = "/dogs")

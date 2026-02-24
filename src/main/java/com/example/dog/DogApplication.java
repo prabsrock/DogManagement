@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DogApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Hello Dog!");
 		SpringApplication.run(DogApplication.class, args);
+		System.out.println("------------------ App is Running !!!");
 	}
 
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Dog Distribution System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+    <h1>Welcome to Dog-Distribution System</h1>
+
+    <!-- Save Dog -->
+    <form id="dogForm">
+        <div class="form-row">
+            <label for="dogBreed">Dog Breed:</label>
+            <input type="text" id="dogBreed" placeholder="Enter breed. Eg: Retriever">
+        </div>
+
+        <div class="form-row">
+            <label for="dogType">Dog Type:</label>
+            <input type="text" id="dogType" placeholder="Enter type. Eg: Golden">
+        </div>
+
+
+
+        <button type="button" onclick="submitDog()">Save</button>
+    </form>
+
+    <!-- Fetch/Delete Dog -->
+    <form id="getDogForm">
+        <div class="form-row">
+            <label for="dogId">Dog ID:</label>
+            <input type="text" id="dogId" placeholder="Enter ID">
+        </div>
+
+
+        <button type="button" onclick="getDog()">Fetch Dog</button>
+    </form>
+
+    <div id="dogResult"></div>
+
+    <form id="getAllDogsForm">
+        <button type="button" onclick="getAllDogs()">Fetch All Dogs</button>
+    </form>
+
+    <script>
+        function submitDog() {
+            const dogBreed = document.getElementById("dogBreed").value;
+            const dogType = document.getElementById("dogType").value;
+
+            fetch("/api/dogs", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dogBreed, dogType })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("dogResult").innerText =
+                        `Saved Dog → Breed: ${data.dogBreed}, Type: ${data.dogType}`;
+                })
+                .catch(err => console.error("Error:", err));
+        }
+
+        function getDog() {
+            const dogId = document.getElementById("dogId").value;
+
+            fetch(`/api/dogs/${dogId}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("dogResult").innerText =
+                        `Fetched Dog → Breed: ${data.dogBreed}, Type: ${data.dogType}`;
+                })
+                .catch(err => console.error("Error:", err));
+        }
+
+        function deleteDog(id) {
+            fetch(`/api/dogs/${id}`, { method: "DELETE" })
+                .then(res => res.text())
+                .then(msg => {
+                    getAllDogs(); // refresh table
+                })
+                .catch(err => console.error("Error:", err));
+        }
+
+        function getAllDogs() {
+            fetch(`/api/dogs`)
+                .then(res => res.json())
+                .then(data => {
+                    let table = "<table border='1' style='margin:auto;'><tr><th>ID</th><th>Breed</th><th>Type</th><th>Actions</th></tr>";
+                    data.forEach(dog => {
+                        table += `
+                    <tr>
+                        <td>${dog.id}</td>
+                        <td><input type="text" id="breed-${dog.id}" value="${dog.dogBreed}"></td>
+                        <td><input type="text" id="type-${dog.id}" value="${dog.dogType}"></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button onclick="updateDog(${dog.id})">Update</button>
+                                <button onclick="deleteDog(${dog.id})">Delete</button>
+                            </div>
+                        </td>
+                    </tr>`;
+                    });
+                    table += "</table>";
+                    document.getElementById("dogResult").innerHTML = table;
+                })
+                .catch(err => console.error("Error:", err));
+        }
+
+
+        function updateDog(id) {
+            const breed = document.getElementById(`breed-${id}`).value;
+            const type = document.getElementById(`type-${id}`).value;
+
+            fetch(`/api/dogs/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dogBreed: breed, dogType: type })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(`Updated Dog ID ${id}: Breed=${data.dogBreed}, Type=${data.dogType}`);
+                    getAllDogs(); // refresh table
+                })
+                .catch(err => console.error("Error:", err));
+        }
+
+    </script>
+</body>
+
+</html>
