@@ -8,7 +8,7 @@ public class DogApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DogApplication.class, args);
-		System.out.println("------------------ App is Running !!!");
+		System.out.println("----------------The---------App---------is---------Running---------------- !!!");
 	}
 
 }

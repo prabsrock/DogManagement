@@ -1,187 +1,132 @@
-<!-- 
-# CrudOperationApi - CRUD Operations of Category and Product.
+ 
+# Dog-Distribution System.
 
-This project is a simple CrudOperationApi platform built using Spring Boot and REST APIs, demonstrating CRUD (Create, Read, Update, Delete) operations with Hibernate mappings (One-to-Many and Many-to-One) for managing entities like Products and Categories.
+This project is built using Spring Boot and REST APIs, demonstrating CRUD (Create, Read, Update, Delete) operations.
 
 ## Features
 
-•	Category Management:
-          o	Add, retrieve, update, and delete categories.
-          o	Each category can contain multiple product(One-to-Many mapping).
-•	Product Management:
-           o Create, view, update, and delete products.
-           o Each product belongs to a single category(Many-to-One mapping).
+•	Dog Management:
+            Add, retrieve, update, and delete dogs.
+
+•	Dog Validation:
+            Create a validation framework from input fields.
+
 •	RESTful APIs: 
             Provides clean and modular endpoints for seamless integration with third-party applications.
+
 •	Postman Testing: 
-            Includes Postman collection for testing all APIs.
-•	Hibernate ORM: 
-            Implements relational mappings to ensure smooth interaction with the database.
+            Includes APIs for testing.
+
 • Database Integration: 
-            Persistent storage with a relational database like MySQL.
+            Persistent storage with a relational database PostgreSQL.
 
 ## Tech Stack
 
 •	Springboot: Backend framework for building scalable applications.
-•	Hibernate:  ORM tool for database interaction and relational mappings.
+
 •	Spring Data JPA: For simplified data access.
+
 •	Spring Web : for RESTful APIs
+
 •	Springboot DevTools : for hot reloading (optional)
+
+•	Maven : Builds, manages dependencies and project lifecycle.
+
 •	Postman: For testing and validating API endpoints.
-•	MySql : For storing data in relational database.
 
-## Hibernate Mapping
+•	Thymeleaf : Server-side Java template engine viewing dynamic HTML
 
- One-to-Many (Category → Products)
-            •	A single category can have multiple associated products.
-Many-to-One (Products → Category) 
-            •	Each product is linked to a single category.
-            
+•	Docker: Package app into container for deployment in render.com.
+
+•	Render.com: Cloud platform deploying web apps, databases.
+
+•	PostgreSQL : For storing data in relational database.
+           
 ## API Reference
 
-#### Get all items
+#### Get all dogs
 
 ```http
-  https://github.com/NileshR15/Crud_Operation_Api
+  https://dogmanagement-ystu.onrender.com/api/dogs
 ```
 
-#### Get item
+#### Get dog
 
 ```http
-  GET /api/items/${id}
+  GET /api/dogs/${id}
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| `id`      | `integer` | **Required**. Id of dog to fetch |
 
 
-#### CRUD API for Categories and Products
+#### CRUD API for Dogs
 
-This project implements a simple CRUD API for managing categories and products with pagination. The application allows you to create, read, update, and delete categories and products, with the products being associated with categories.
+This project implements a simple CRUD API for managing dogs. The application allows you to create, read, update, and delete dogs.
 
 ## Api Endpoints
 
-Category Endpoints
+Dog Endpoints
 
-    Get All Categories: GET /api/categories
-    Get Category by ID: GET /api/categories/{id}
-    Create Category: POST /api/categories
-    Update Category: PUT /api/categories/{id}
-    Delete Category: DELETE /api/categories/{id}
-
-
-Product Endpoints
-
-    Get All Products: GET /api/products
-    Get Product by ID: GET /api/products/{id}
-    Create Product: POST /api/products
-    Update Product: PUT /api/products/{id}
-    Delete Product: DELETE /api/products/{id}
+    Get All Dogs: GET /api/dogs
+    Get Dog by ID: GET /api/dogs/{id}
+    Create Dog: POST /api/dogs
+    Update Dog: PUT /api/dogs/{id}
+    Delete Dog: DELETE /api/dogs/{id}
 
 
-### Category CRUD
+### Dog CRUD
 
-1. **GET /api/categories?page={page_number}**
-   - Fetch all categories with pagination.
-   - **Example:**
-     ```http
-     GET http://localhost:8080/api/categories?page=3
-     ```
-
-2. **POST /api/categories**
-   - Create a new category.
+1. **POST /api/dogs**
+   - Create a new dog.
    - **Request Body:**
      ```json
-     {
-       "name": "Category Name",
-       "description": "Category Description"
-     }
+      {
+        "dogBreed": "spaniel",
+        "dogType": "cocker"
+      }
      ```
 
-3. **GET /api/categories/{id}**
-   - Fetch a category by ID.
+2. **GET /api/dogs/{id}**
+   - Fetch a dog by ID.
    - **Example:**
      ```http
-     GET http://localhost:8080/api/categories/1
+     GET http://localhost:8080/api/dogs/1
+     ```
+   - **Example:**
+     ```http
+     GET https://dogmanagement-ystu.onrender.com/api/dogs/1
      ```
 
-4. **PUT /api/categories/{id}**
-   - Update a category by ID.
+3. **PUT /api/dogs/{id}**
+   - Update a dog by ID.
    - **Request Body:**
      ```json
-     {
-       "name": "Updated Category Name",
-       "description": "Updated Description"
-     }
+      {
+        "dogBreed" : "Retriver",
+        "dogType" : "Golden"
+      }
      ```
 
-5. **DELETE /api/categories/{id}**
-   - Delete a category by ID.
+4. **DELETE /api/dogs/{id}**
+   - Delete a deog by ID.
    - **Example:**
      ```http
-     DELETE http://localhost:8080/api/categories/1
+     DELETE http://localhost:8080/api/dogs/1
      ```
-
-### Product CRUD
-
-1. **GET /api/products?page={page_number}**
-   - Fetch all products with pagination.
    - **Example:**
      ```http
-     GET http://localhost:8080/api/products?page=2
+     DELETE https://dogmanagement-ystu.onrender.com/api/dogs/1
      ```
 
-2. **POST /api/products**
-   - Create a new product.
-   - **Request Body:**
-     ```json
-     {
-       "name": "Product Name",
-       "price": 100.0,
-       "categoryId": 1
-     }
-     ```
 
-3. **GET /api/products/{id}**
-   - Fetch product by ID, with category details.
-   - **Example Response:**
-     ```json
-     {
-       "id": 1,
-       "name": "Product Name",
-       "price": 100.0,
-       "category": {
-         "id": 1,
-         "name": "Category Name",
-         "description": "Category Description"
-       }
-     }
-     ```
-
-4. **PUT /api/products/{id}**
-   - Update a product by ID.
-   - **Request Body:**
-     ```json
-     {
-       "name": "Updated Product Name",
-       "price": 150.0,
-       "categoryId": 2
-     }
-     ```
-
-5. **DELETE /api/products/{id}**
-   - Delete a product by ID.
-   - **Example:**
-     ```http
-     DELETE http://localhost:8080/api/products/1
-     ```
 
 ## Project Setup
 
 ### Prerequisites
 
-- **JDK 17 or higher**
+- **JDK 17  or higher**
 - **Maven** (for building the project)
 - **IDE** (e.g., IntelliJ IDEA, VS Code, or STS)
 
@@ -189,14 +134,17 @@ Product Endpoints
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/NileshR15/Crud_Operation_Api.git
+   git clone https://github.com/prabsrock/DogManagement.git
 2. ***Navigate into the project directory:**
     ```bash
-    cd Crud_Operation_Api
+    cd dog
 3. **Build the project using Maven:**
     ```bash
     mvn clean install
-4. **Run the application:**
+4. **Run the test cases of the project using Maven:**
+    ```bash
+    mvn test
+5. **Run the application:**
     ```bash
     mvn spring-boot:run
 The application will start on port 8080 by default.
@@ -204,16 +152,26 @@ The application will start on port 8080 by default.
 
 ## Project Structure
 
-Model: Defines Category and Product entities with Hibernate mappings.
+Model: Defines dog data.
+
 Repository: Interfaces for database operations using Spring Data JPA.
-Service: Contains business logic for CRUD operations.
+
+Service: Contains business logic for validation operations.
+
+Exception: Contains business error logic.
+
+Config: Classes to static values and messages.
+
 Controller: Exposes REST endpoints for external interaction.
 
-## Postman Testing
-
-Import the provided postman-collection.json file into Postman.
-Test all API endpoints with pre-configured examples.
 
 ## Conclusion
 
-This API provides endpoints for creating, retrieving, updating, and deleting categories and products. Use the examples provided to make requests to the API and manage your data. -->
+This API provides endpoints for creating, retrieving, updating, and deleting dogs. Use the examples provided to make requests to the API and manage your data.
+
+You can also launch the application’s graphical user interface (GUI) to interact with its features. 
+
+The cold start initialization process may require several minutes before the application becomes fully operational.
+
+  ```https
+      https://dogmanagement-ystu.onrender.com

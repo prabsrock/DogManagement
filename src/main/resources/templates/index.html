@@ -53,25 +53,56 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ dogBreed, dogType })
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        // If response is not OK (400/500), parse error JSON
+                        return res.json().then(err => {
+                            throw new Error(err.error || err.message || "Unknown error");
+                        });
+                    }
+                    return res.json();
+                })
                 .then(data => {
                     document.getElementById("dogResult").innerText =
                         `Saved Dog → Breed: ${data.dogBreed}, Type: ${data.dogType}`;
                 })
-                .catch(err => console.error("Error:", err));
+                .catch(err => {
+                    // Show error message to UI
+                    document.getElementById("dogResult").innerText = `Error: ${err.message}`;
+                    console.error("Error:", err);
+                });
         }
+
 
         function getDog() {
             const dogId = document.getElementById("dogId").value;
 
             fetch(`/api/dogs/${dogId}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("dogResult").innerText =
-                        `Fetched Dog → Breed: ${data.dogBreed}, Type: ${data.dogType}`;
+                .then(res => {
+                    if (!res.ok) {
+                        // Parse error JSON and throw with message
+                        return res.json().then(err => {
+                            throw new Error(err.error || err.message || "Unknown error");
+                        });
+                    }
+                    return res.json();
                 })
-                .catch(err => console.error("Error:", err));
+                .then(data => {
+                    if (!data.dogBreed || !data.dogType) {
+                        document.getElementById("dogResult").innerText = "Dog data not found.";
+                    } else {
+                        document.getElementById("dogResult").innerText =
+                            `Fetched Dog → Breed: ${data.dogBreed}, Type: ${data.dogType}`;
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    // Show backend error message to UI
+                    document.getElementById("dogResult").innerText = `Error: ${err.message}`;
+                });
         }
+
+
 
         function deleteDog(id) {
             fetch(`/api/dogs/${id}`, { method: "DELETE" })
